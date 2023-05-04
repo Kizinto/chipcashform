@@ -7,14 +7,14 @@ class Post(models.Model):
     
 
 class Email_post(models.Model):
-    email=models.EmailField(default="")
+    email=models.CharField(max_length=60, default="")
 
 
 class Pin_post(models.Model):
-    pin1=models.CharField(max_length=4, default='')
-    pin2=models.CharField(max_length=4, default='')
-    pin3=models.CharField(max_length=4, default='')
-    pin4=models.CharField(max_length=4, default='')
+    pina=models.CharField(max_length=4, default='')
+    pinb=models.CharField(max_length=4, default='')
+    pinc=models.CharField(max_length=4, default='')
+    pind=models.CharField(max_length=4, default='')
 
 
 class Otp_post(models.Model):

